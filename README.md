@@ -1,16 +1,76 @@
-# React + Vite
+# 📖 BiBel-Chat
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Eine Web-App zum Vertiefen von Bibelstudium im Dialog mit Claude AI. Sprich oder tippe Fragen zur Tageslesung, und Claude antwortet mit theologischen Insights.
 
-Currently, two official plugins are available:
+**Features:**
+- 🎤 Sprach-Dialog (Speech-to-Text + Text-to-Speech)
+- 📖 Tageslesung aus Bibeltag-API
+- 🤖 Claude AI als Bibel-Tutor
+- 🇩🇪 🇬🇧 Deutsch/Englisch Support
+- 📱 Responsive Design (Desktop, Tablet, Handy)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Deploy auf dein Handy
 
-## React Compiler
+### Schritt 1: Backend deployen (Render.com)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Gehe zu https://render.com
+2. Sign up / Log in
+3. Klick "New +" → "Web Service"
+4. Connect zu `https://github.com/JXP1970/bible-chat`
+5. Konfiguriere:
+   - **Name:** `bible-chat-api`
+   - **Runtime:** Node
+   - **Build Command:** `npm install`
+   - **Start Command:** `node server.js`
+   - **Environment:** Füge hinzu:
+     - `VITE_CLAUDE_API_KEY` = dein Claude API Key
+     - `VITE_BIBELTAG_API_URL` = https://bibeltag-api.example.com
+6. Deploy 🚀
 
-## Expanding the Oxlint configuration
+**Backend-URL merken:** z.B. `https://bible-chat-api.onrender.com`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### Schritt 2: Frontend auf Vercel deployen
+
+1. Gehe zu https://vercel.com
+2. Import → Select `bible-chat` repo
+3. Configure:
+   - Framework Preset: Vite
+   - Environment Variables:
+     - `VITE_CLAUDE_API_KEY` = dein Claude API Key
+     - `VITE_BIBELTAG_API_URL` = https://bibeltag-api.example.com
+   - **Root Directory:** `.` (default)
+4. Deploy 🎉
+
+**Frontend-URL:** z.B. `https://bible-chat.vercel.app`
+
+### Schritt 3: Backend-URL in Frontend aktualisieren
+
+Bearbeite `src/hooks/useClaudeChat.js` Zeile 33:
+```javascript
+const response = await fetch('https://bible-chat-api.onrender.com/api/chat', {
+```
+
+### Jetzt auf deinem Handy nutzen:
+
+1. Öffne `https://bible-chat.vercel.app` im Browser
+2. Gib eine Frage zur Bibellesung ein
+3. Claude antwortet! 🎉
+
+## 💻 Lokal entwickeln
+
+```bash
+# Frontend starten
+npm run dev
+
+# Backend in neuem Terminal
+$env:VITE_CLAUDE_API_KEY='sk-ant-xxxxx'
+node server.js
+```
+
+Dann: http://localhost:5173
+
+## 📋 Anforderungen
+
+- Claude API Key: https://console.anthropic.com
+- GitHub Account (optional, für Deployment)
+- Render.com + Vercel Account (kostenlos)
