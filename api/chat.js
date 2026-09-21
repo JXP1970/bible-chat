@@ -5,9 +5,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { system, messages, apiKey } = req.body;
+  const { system, messages, apiKey: frontendApiKey } = req.body;
+  const apiKey = frontendApiKey || process.env.VITE_CLAUDE_API_KEY;
+
   if (!apiKey) {
-    return res.status(400).json({ error: 'API key required' });
+    return res.status(400).json({ error: 'API key required - please set it in the app' });
   }
 
   try {
