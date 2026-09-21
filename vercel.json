@@ -1,18 +1,12 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
+  "buildCommand": "npm install",
   "env": {
-    "VITE_CLAUDE_API_KEY": "@claude_api_key",
-    "VITE_BIBELTAG_API_URL": "@bibeltag_api_url"
+    "VITE_CLAUDE_API_KEY": "@claude_api_key"
   },
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://bible-chat-api.onrender.com/api/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "https://bible-chat-backend.onrender.com/api/:path*"
     }
   ]
 }
