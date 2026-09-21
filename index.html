@@ -326,23 +326,20 @@
       const thinkingId = 'thinking-' + Date.now();
       addThinkingIndicator(thinkingId);
       try {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('/api/chat', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': apiKey,
-            'anthropic-version': '2023-06-01'
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'claude-3-5-sonnet-20241022',
-            max_tokens: 1024,
             system: `Du bist ein erfahrener Bibellehrer. Sprache: ${language === 'de' ? 'Deutsch' : 'English'}.`,
-            messages: messages
+            messages: messages,
+            apiKey: apiKey
           })
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error?.message || 'API Error');
-        const assistantMessage = data.content?.[0]?.text || 'Keine Antwort';
+        if (!response.ok) throw new Error(data.error || 'API Error');
+        const assistantMessage = data.content || 'Keine Antwort';
         document.getElementById(thinkingId)?.remove();
         messages.push({ role: 'assistant', content: assistantMessage });
         addMessageToChat('assistant', assistantMessage);

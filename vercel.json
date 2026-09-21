@@ -1,4 +1,9 @@
 {
-  "buildCommand": "",
-  "outputDirectory": "./"
+  "buildCommand": "npm install --legacy-peer-deps || true",
+  "functions": {
+    "api/chat.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
 }
