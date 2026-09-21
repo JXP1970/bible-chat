@@ -3,10 +3,10 @@
   "env": {
     "VITE_CLAUDE_API_KEY": "@claude_api_key"
   },
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://bible-chat-backend.onrender.com/api/:path*"
+  "functions": {
+    "api/chat.js": {
+      "memory": 1024,
+      "maxDuration": 30
     }
-  ]
+  }
 }

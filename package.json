@@ -1,15 +1,11 @@
 {
   "name": "bible-chat",
   "version": "1.0.0",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "echo 'Deploy to Vercel for full functionality'"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.127.0",
-    "cors": "^2.8.6",
-    "dotenv": "^18.0.1",
-    "express": "^5.2.1"
+    "@anthropic-ai/sdk": "^0.127.0"
   }
 }
