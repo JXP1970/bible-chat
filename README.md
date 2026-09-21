@@ -62,3 +62,4 @@ Dann: http://localhost:3000
 ├── package.json
 └── vercel.json        ← Deployment Config
 ```
+# BiBel-Chat — Deployment gestartet 🚀
