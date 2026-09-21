@@ -200,7 +200,6 @@
     </div>
   </div>
   <script>
-    const API_KEY = localStorage.getItem('claudeApiKey') || '';
     let messages = [];
     let isRecording = false;
     let language = 'de';
@@ -248,7 +247,7 @@
     }
     async function sendMessage() {
       const text = messageInput.value.trim();
-      if (!text || !API_KEY) { if (!API_KEY) alert('API Key nicht konfiguriert!'); return; }
+      if (!text) return;
       messages.push({ role: 'user', content: text });
       addMessageToChat('user', text);
       messageInput.value = '';
