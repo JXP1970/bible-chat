@@ -1,5 +1,6 @@
 {
-  "buildCommand": "npm install",
+  "buildCommand": "",
+  "outputDirectory": ".",
   "functions": {
     "api/chat.js": {
       "memory": 1024,
