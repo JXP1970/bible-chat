@@ -1,5 +1,13 @@
 # BiBel-Chat Changelog
 
+## [1.0.1] – 2026-09-21
+**Patch – Anzeige der Lesungsreferenz**
+
+### Fixes
+- 🐛 Kapitelnummer wurde in der Sidebar doppelt angezeigt („Philipper 4 4:1-9"). Das Feld `book` enthielt das Kapitel bereits, das Template hat es ein zweites Mal angehängt. `book` ist jetzt nur noch der Buchname, die Referenz wird aus `book`/`chapter`/`verses` zusammengesetzt → „Philipper 4:1-9".
+
+---
+
 ## [1.0.0] – 2026-09-21
 **Initial Release – Full Feature Set**
 

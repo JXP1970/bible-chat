@@ -1,6 +1,6 @@
 # BiBel-Chat
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.0.1-blue)
 ![Status](https://img.shields.io/badge/status-active-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -45,7 +45,7 @@ This project follows **Semantic Versioning** (semver):
 
 ### Current Version
 ```
-v1.0.0 – Initial Release (2026-09-21)
+v1.0.1 – Fix: doppelte Kapitelnummer in der Lesungsreferenz (2026-09-21)
 ```
 
 ## 🔐 Security Notes
