@@ -5,12 +5,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.VITE_CLAUDE_API_KEY;
+  const { system, messages, apiKey } = req.body;
   if (!apiKey) {
-    return res.status(500).json({ error: 'API key not configured' });
+    return res.status(400).json({ error: 'API key required' });
   }
-
-  const { system, messages } = req.body;
 
   try {
     const client = new Anthropic({ apiKey });

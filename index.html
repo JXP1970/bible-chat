@@ -40,7 +40,12 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     .header h1 { font-size: 24px; font-weight: 600; }
-    .lang-toggle {
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .lang-toggle, .api-btn {
       background: rgba(255,255,255,0.2);
       border: 2px solid white;
       color: white;
@@ -50,7 +55,53 @@
       font-weight: 600;
       transition: all 0.2s;
     }
-    .lang-toggle:hover { background: rgba(255,255,255,0.3); }
+    .lang-toggle:hover, .api-btn:hover { background: rgba(255,255,255,0.3); }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    .modal-content h2 { margin-top: 0; color: var(--purple); }
+    .modal-content input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+      margin: 15px 0;
+      box-sizing: border-box;
+    }
+    .modal-content button {
+      background: var(--purple);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    .modal-content button:hover { background: var(--purple-dark); }
+    .modal-content .cancel-btn {
+      background: #6b7280;
+    }
+    .modal-content .cancel-btn:hover { background: #4b5563; }
     .sidebar {
       background: white;
       border-radius: 8px;
@@ -177,7 +228,19 @@
 <body>
   <div class="header">
     <h1>📖 BiBel-Chat</h1>
-    <button class="lang-toggle" id="langToggle">English</button>
+    <div class="header-actions">
+      <button class="api-btn" id="apiBtn">🔑 API</button>
+      <button class="lang-toggle" id="langToggle">English</button>
+    </div>
+  </div>
+  <div class="modal" id="apiModal">
+    <div class="modal-content">
+      <h2>Claude API Key</h2>
+      <p>Gib deinen Claude API Key ein (von <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>):</p>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-..." />
+      <button onclick="saveApiKey()">Speichern</button>
+      <button class="cancel-btn" onclick="closeApiModal()">Abbrechen</button>
+    </div>
   </div>
   <div class="container">
     <div class="sidebar">
@@ -203,6 +266,7 @@
     let messages = [];
     let isRecording = false;
     let language = 'de';
+    let apiKey = localStorage.getItem('claudeApiKey') || '';
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
     const synth = window.speechSynthesis;
     const chatBox = document.getElementById('chatBox');
@@ -210,6 +274,9 @@
     const sendBtn = document.getElementById('sendBtn');
     const recordBtn = document.getElementById('recordBtn');
     const langToggle = document.getElementById('langToggle');
+    const apiBtn = document.getElementById('apiBtn');
+    const apiModal = document.getElementById('apiModal');
+    const apiKeyInput = document.getElementById('apiKeyInput');
     const i18n = {
       de: { readingLabel: 'Tageslesung', inputPlaceholder: 'Frag Claude etwas zur Lesung...' },
       en: { readingLabel: 'Daily Reading', inputPlaceholder: 'Ask Claude about the reading...' }
@@ -232,6 +299,10 @@
     });
     recordBtn.addEventListener('click', toggleRecording);
     langToggle.addEventListener('click', toggleLanguage);
+    apiBtn.addEventListener('click', () => {
+      apiKeyInput.value = apiKey;
+      apiModal.classList.add('active');
+    });
     recognition.onstart = () => { isRecording = true; recordBtn.classList.add('recording'); recordBtn.textContent = '⏹️'; };
     recognition.onresult = (event) => { messageInput.value = Array.from(event.results).map(r => r[0].transcript).join(''); };
     recognition.onend = () => { isRecording = false; recordBtn.classList.remove('recording'); recordBtn.textContent = '🎤'; };
@@ -248,6 +319,7 @@
     async function sendMessage() {
       const text = messageInput.value.trim();
       if (!text) return;
+      if (!apiKey) { alert('Bitte gib zuerst dein API Key ein! (🔑 API Button)'); return; }
       messages.push({ role: 'user', content: text });
       addMessageToChat('user', text);
       messageInput.value = '';
@@ -257,9 +329,14 @@
         const response = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ system: `Du bist ein erfahrener Bibellehrer. Sprache: ${language === 'de' ? 'Deutsch' : 'English'}.`, messages })
+          body: JSON.stringify({
+            system: `Du bist ein erfahrener Bibellehrer. Sprache: ${language === 'de' ? 'Deutsch' : 'English'}.`,
+            messages,
+            apiKey
+          })
         });
         const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'API Error');
         const assistantMessage = data.content || data.message || 'Keine Antwort';
         document.getElementById(thinkingId)?.remove();
         messages.push({ role: 'assistant', content: assistantMessage });
@@ -267,7 +344,7 @@
         if (synth && assistantMessage) speakText(assistantMessage);
       } catch (error) {
         document.getElementById(thinkingId)?.remove();
-        addMessageToChat('assistant', 'Fehler beim API-Aufruf.');
+        addMessageToChat('assistant', `Fehler: ${error.message}`);
       }
     }
     function addMessageToChat(role, content) {
@@ -296,6 +373,18 @@
       synth.speak(utterance);
     }
     loadBibleReading();
+    function saveApiKey() {
+      const newApiKey = apiKeyInput.value.trim();
+      if (!newApiKey) { alert('API Key darf nicht leer sein!'); return; }
+      apiKey = newApiKey;
+      localStorage.setItem('claudeApiKey', apiKey);
+      closeApiModal();
+      alert('API Key gespeichert!');
+    }
+    function closeApiModal() {
+      apiModal.classList.remove('active');
+      apiKeyInput.value = '';
+    }
     if (!API_KEY) console.warn('API Key fehlt! In Console: localStorage.setItem("claudeApiKey", "sk-ant-...")');
   </script>
 </body>
