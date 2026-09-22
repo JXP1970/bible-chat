@@ -1,6 +1,6 @@
 # BiBel-Chat
 
-![Version](https://img.shields.io/badge/version-1.0.1-blue)
+![Version](https://img.shields.io/badge/version-1.0.2-blue)
 ![Status](https://img.shields.io/badge/status-active-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -33,7 +33,7 @@
 - **Architecture:** Single-file HTML + inline CSS + vanilla JavaScript
 - **Deployment:** GitHub Pages
 - **API Integration:** Claude Messages API with `anthropic-dangerous-direct-browser-access` header
-- **Model:** `claude-3-5-sonnet-20241022`
+- **Model:** `claude-sonnet-5` (Modell-Lebensdauer prüfen: [Deprecations](https://platform.claude.com/docs/en/about-claude/model-deprecations) – eine abgeschaltete Modell-ID lässt jede Anfrage fehlschlagen)
 - **Storage:** localStorage (API key only)
 
 ## 📝 Versioning
@@ -45,7 +45,7 @@ This project follows **Semantic Versioning** (semver):
 
 ### Current Version
 ```
-v1.0.1 – Fix: doppelte Kapitelnummer in der Lesungsreferenz (2026-09-21)
+v1.0.2 – Fix: abgeschaltetes Modell ersetzt, "Failed to fetch" behoben (2026-09-22)
 ```
 
 ## 🔐 Security Notes

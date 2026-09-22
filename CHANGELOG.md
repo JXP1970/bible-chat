@@ -1,5 +1,16 @@
 # BiBel-Chat Changelog
 
+## [1.0.2] – 2026-09-22
+**Patch – „Failed to fetch" behoben: abgeschaltetes Modell**
+
+### Fixes
+- 🐛 Jede Anfrage schlug fehl, weil die App `claude-3-5-sonnet-20241022` aufrief. Dieses Modell wurde von Anthropic am **28.10.2025 retired** – Anfragen an abgeschaltete Modelle schlagen fehl. Modell auf `claude-sonnet-5` umgestellt (aktiv bis mindestens 30.06.2027).
+
+### Hinweis
+- Modell-Lebensdauer im Blick behalten: https://platform.claude.com/docs/en/about-claude/model-deprecations
+
+---
+
 ## [1.0.1] – 2026-09-21
 **Patch – Anzeige der Lesungsreferenz**
 

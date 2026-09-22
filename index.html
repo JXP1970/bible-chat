@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
-<!-- BiBel-Chat v1.0.1 | Single-file Bible study app with Claude AI | GitHub Pages deployment -->
+<!-- BiBel-Chat v1.0.2 | Single-file Bible study app with Claude AI | GitHub Pages deployment -->
 <html lang="de">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="version" content="1.0.1">
-  <title>BiBel-Chat v1.0.1</title>
+  <meta name="version" content="1.0.2">
+  <title>BiBel-Chat v1.0.2</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -337,7 +337,7 @@
             'anthropic-dangerous-direct-browser-access': 'true'
           },
           body: JSON.stringify({
-            model: 'claude-3-5-sonnet-20241022',
+            model: 'claude-sonnet-5',
             max_tokens: 1024,
             system: `Du bist ein erfahrener Bibellehrer. Sprache: ${language === 'de' ? 'Deutsch' : 'English'}.`,
             messages: messages
